@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sketch</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+    <style>
+      /* Submenu styles */
+      .side-menu nav ul li .submenu {
+        display: none;
+        list-style: none;
+        padding-left: 20px; /* Indent submenu */
+      }
+
+      .side-menu nav ul li:hover > .submenu {
+        display: block;
+      }
+
+      /* Style for the main menu item with a submenu */
+      .has-submenu > a {
+        cursor: default; /* Make it not look clickable */
+      }
+
+      .side-menu nav ul li .submenu a {
+        font-size: 18px; /* 讓子選單字體大一點 */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="sideMenu" class="side-menu" aria-hidden="true">
+      <nav>
+        <ul>
+          <li class="has-submenu">
+            <a href="#">淡江大學</a>
+            <ul class="submenu">
+              <li><a href="#" id="menu-tku-et">教育科技學系</a></li>
+            </ul>
+          </li>
+          <li><a href="#" id="menu-work">第一單元作品</a></li>
+          <li><a href="#" id="menu-handout">第一單元講義</a></li>
+          <li><a href="#" id="menu-quiz">測驗系統</a></li>
+          <li><a href="#" id="menu-quiz-notes">測驗系統筆記</a></li>
+          <li><a href="#" id="menu-work-notes">作品筆記</a></li>
+          <li><a href="#">回到首頁</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- iframe overlay (hidden by default) -->
+    <div id="iframeOverlay" class="iframe-overlay" aria-hidden="true">
+      <div class="iframe-backdrop"></div>
+      <div class="iframe-container" role="dialog" aria-modal="true">
+        <button id="iframeClose" class="iframe-close" aria-label="關閉">×</button>
+        <iframe id="contentIframe" src="" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+    <script src="sketch.js"></script>
+  </body>
+</html>
