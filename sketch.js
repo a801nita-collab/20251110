@@ -15,6 +15,11 @@ let iframeEl;
 let iframeCloseBtn;
 let menuHandoutEl;
 
+// Text animation variables
+let textY;
+let textAnimationStartFrame;
+const textAnimationDuration = 120; // Animation duration in frames (e.g., 2 seconds at 60fps)
+
 function setup() {
 	cnv = createCanvas(windowWidth, windowHeight);
 	// position canvas at the top-left and ensure it fills the window
@@ -27,6 +32,10 @@ function setup() {
 	ctx = drawingContext;
 	centerX = width / 2;
 	centerY = height / 2;
+
+	// Initialize text animation state
+	textAnimationStartFrame = frameCount;
+	textY = -80; // Start position above the canvas (assuming text size is 80)
 
 	// side menu element and interaction
 	sideMenuEl = document.getElementById('sideMenu');
@@ -168,6 +177,8 @@ function windowResized() {
 	// resize canvas and update any cached dimensions
 	resizeCanvas(windowWidth, windowHeight);
 	centerX = width / 2;
+	// Recalculate center Y, but don't reset the animation
+	// The animation will naturally resolve to the new centerY
 	centerY = height / 2;
 }
 
@@ -176,10 +187,23 @@ function draw() {
 	for (let i of movers) {
 		i.run();
 	}
-	for (let i = 0; i < movers.length; i++) {
+	// Iterate backwards to safely remove items from the array
+	for (let i = movers.length - 1; i >= 0; i--) {
 		if (movers[i].isDead) {
 			movers.splice(i, 1);
 		}
+	}
+
+	// --- Text Animation ---
+	const elapsedFrames = frameCount - textAnimationStartFrame;
+	if (elapsedFrames <= textAnimationDuration) {
+		const startY = -80; // Initial position above the screen
+		const endY = centerY;
+		const t = elapsedFrames / textAnimationDuration; // Normalized time (0 to 1)
+		const easedT = easeInOutBounce(t);
+		textY = lerp(startY, endY, easedT);
+	} else {
+		textY = centerY; // Keep text in the center after animation
 	}
 
 	// 在畫布中央加上文字
@@ -187,7 +211,7 @@ function draw() {
 	fill(255, 255, 255, 200); // 使用半透明的白色
 	textSize(80);
 	textAlign(CENTER, CENTER);
-	text('淡江大學', centerX, centerY);
+	text('淡江大學', centerX, textY);
 	pop();
 
 	if (frameCount % int(random(80)) == 0) {
@@ -213,6 +237,27 @@ function addMovers() {
 
 function easeInOutCubic(x) {
 	return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+}
+
+function easeInOutBounce(x) {
+	const n1 = 7.5625;
+	const d1 = 2.75;
+
+	const bounceOut = (n) => {
+		if (n < 1 / d1) {
+			return n1 * n * n;
+		} else if (n < 2 / d1) {
+			return n1 * (n -= 1.5 / d1) * n + 0.75;
+		} else if (n < 2.5 / d1) {
+			return n1 * (n -= 2.25 / d1) * n + 0.9375;
+		} else {
+			return n1 * (n -= 2.625 / d1) * n + 0.984375;
+		}
+	};
+
+	return x < 0.5 ?
+		(1 - bounceOut(1 - 2 * x)) / 2 :
+		(1 + bounceOut(2 * x - 1)) / 2;
 }
 
 /*------------------------------------------------------------------------------------------*/
