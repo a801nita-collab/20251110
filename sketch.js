@@ -143,7 +143,7 @@ function setup() {
 	if (menuWorkNotesEl) {
 		menuWorkNotesEl.addEventListener('click', (ev) => {
 			ev.preventDefault();
-			openIframe('https://hackmd.io/@8R3rNBC5Tz2EDJ4XvI1alQ/rJKNvcK1Wg');
+			openIframe('https://hackmd.io/@8R3rNBC5Tz2EDJ4XvI1alQ/rJCJnaCkWg');
 		});
 	}
 
