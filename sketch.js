@@ -211,7 +211,9 @@ function draw() {
 	fill(255, 255, 255, 200); // 使用半透明的白色
 	textSize(80);
 	textAlign(CENTER, CENTER);
-	text('淡江大學', centerX, textY);
+	text('淡江大學', centerX, textY - 25);
+	textSize(40);
+	text('ooooo0589 黃o婷', centerX, textY + 45);
 	pop();
 
 	if (frameCount % int(random(80)) == 0) {
